@@ -128,13 +128,29 @@ module.exports = function(name) {
     Model.prototype.save = function(callback) {
         var check = this.validate();
         if (check === true) {
-            log.info("Storage call");
 
+            if (this.isValid()) {
+                var where = {};
+                where[this.primaryKey] = this.attrs[this.primaryKey];
 
-            this.model._storageEngine.query().insert().set(this.attrs).call(callback);
+                this.model._storageEngine.query().update().where(where).set(this.attrs).limit(1).call(callback);
+            } else {
+                this.model._storageEngine.query().insert().set(this.attrs).call(function(err, data) {
+                    if (data.affectedRows > 0) {
+                        this[this.primaryKey](data.insertId);
+                    }
+
+                    callback(err, data.insertId || null);
+                }.bind(this));
+            }
+
         } else {
             callback(check);
         }
+    };
+
+    Model.prototype.isValid = function() {
+        return !isNaN(this.attrs[this.primaryKey])
     };
 
     Model.prototype.delete = function() {

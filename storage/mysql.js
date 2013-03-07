@@ -42,7 +42,6 @@ Storage.prototype.query = function() {
 };
 
 Storage.prototype.execute = function(query, callback) {
-    console.log("Execute called: " + query);
     this._connect().query(query, callback);
 };
 
