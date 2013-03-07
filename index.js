@@ -5,8 +5,7 @@
  *
  */
 
-var log = require('../utils/log').init(module),
-    DefaultStorage  = require('./storage/default');
+var DefaultStorage  = require('./storage/default');
     DefaultAttrType = require('./attr/default');
 
 
@@ -47,7 +46,7 @@ module.exports = function(name) {
             if (0 == arguments.length) return this.attrs[sAttr] || undefined;
 
             if (model._attributes[sAttr].validate(val)) {
-                log.info("Attr %s is valid (%s)", sAttr, val);
+                //log.info("Attr %s is valid (%s)", sAttr, val);
             }
             this.attrs[sAttr] = val;
 

@@ -6,7 +6,7 @@
  */
 
 var DefaultStorage = require('./default'),
-    QueryBuilder    = require('../../db-querybuilder');
+    QueryBuilder    = require('../../node-querybuilder');
 
 var Storage = function(Model) {
     this._connect = function() {};
