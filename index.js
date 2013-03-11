@@ -12,7 +12,7 @@ var DefaultStorage  = require('./storage/default');
 module.exports = function(name) {
 
     var Model = function(attrs) {
-        if (!(this instanceof Model)) return new model(attrs);
+        if (!(this instanceof Model)) return new Model(attrs);
 
         this.attrs = {};
 
