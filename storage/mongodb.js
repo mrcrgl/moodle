@@ -44,14 +44,17 @@ Storage.prototype.execute = function(query, callback) {
 
 
     if (query.type == 'select') {
-        if (multiple) {
-            cursor = this._connect().find(query.where, query.what || {});
-        } else {
-            cursor = this._connect().findOne(query.where, query.what || undefined, callback);
-            sent = true;
-        }
+        //if (multiple) {
+            cursor = this._connect().find(query.where);
+        //} else {
+        //    cursor = this._connect().findOne(query.where, callback);
+        //    sent = true;
+        //}
     } else if (query.type == 'update') {
-        cursor = this._connect().update(query.where, query.set, { safe: true }, callback);
+        cursor = this._connect().update(query.where, query.set, { safe: true }, function(err) {
+            if (err) console.error(err);
+            callback(err);
+        });
         sent = true;
     } else if (query.type == 'delete') {
         cursor = this._connect().remove(query.where, callback);
