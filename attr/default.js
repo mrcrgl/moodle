@@ -40,6 +40,10 @@ AttrType.prototype.setOption = function(option, value) {
     this.options[option] = value;
 };
 
+AttrType.prototype.set = function(v) {
+    return v;
+};
+
 AttrType.prototype.validate = function(v) {
     var self = this;
     var fns = this.validators;
