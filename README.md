@@ -8,35 +8,45 @@ $ npm install moodle
 
 ## Usage
 ```javascript
+var db    = require('your-mongo-instance');
 var Model = require('moodle');
 
-var Dashboard = new Model('Dashboard');
+var User = new Model('User');
 
-Dashboard.storage('mongodb')
-    .connect(function() { return db.dashboards });
+User.storage('mongodb')
+    .connect(
+        function() { 
+            // Return your mongo instance with selected collection
+            return db.users 
+        }
+    );
 
-Dashboard.attr('_id', 'ObjectId');
+/**
+ * Define attributes
+ */
+User.attr('_id', 'ObjectId');
 
-Dashboard.attr('owner', 'ObjectId')
+User.attr('owner', 'ObjectId')
     .required();
 
-Dashboard.attr('name', 'String')
+User.attr('name', 'String')
     .required();
 
-Dashboard.attr('icon', 'String');
+User.attr('icon', 'String');
 
-Dashboard.attr('widgets', 'Object');
+User.attr('widgets', 'Object');
 
-Dashboard.attr('columns', 'String')
+User.attr('columns', 'String')
     .required();
 
-
-Dashboard.attr('priority', 'Integer')
+User.attr('priority', 'Integer')
     .default(1)
     .required();
 
-Dashboard.attr('status', 'Bool')
+User.attr('status', 'Bool')
     .default(true)
     .required();
+
+modules.export = User;
 
 ```
