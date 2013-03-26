@@ -1,14 +1,14 @@
 /**
  * @author: Marc Riegel <mail@marclab.de>
- * Date: 18.03.13
- * Time: 16:23
+ * Date: 26.03.13
+ * Time: 12:01
  *
  */
 
 var DefaultAttrType = require('./default');
 
 /**
- * @class AttrObject
+ * @class AttrObjectId
  *
  * @extends AttrDefault
  * @param attr
@@ -18,9 +18,12 @@ var AttrType = function(attr) {
 
     this.initialize(attr);
 
+    this.default(undefined);
+    this.required(false);
+
     this.validator(function(self, v) {
-        if (typeof v !== 'object') {
-            self.errors.push("Not a valid object: "+v);
+        if (undefined !== v && !v.toString().match(/^([0-9a-f]{24})$/)) {
+            self.errors.push("Not a valid ObjectId: "+v);
         }
     });
 

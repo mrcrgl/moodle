@@ -78,9 +78,9 @@ AttrType.prototype.alias = function(alias) {
     return this;
 };
 
-AttrType.prototype.required = function() {
+AttrType.prototype.required = function(val) {
 
-    this.setOption('required', true);
+    this.setOption('required', (val ? true : false));
 
     return this;
 };
