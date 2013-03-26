@@ -86,7 +86,7 @@ module.exports = function(name) {
                 var model = new Model(data[0]);
                 callback(err, model);
             } else {
-                callback(err);
+                callback(err, new Model()); // return empty model instance
             }
         });
     };
