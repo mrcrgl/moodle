@@ -58,7 +58,17 @@ module.exports = function(name) {
         return this._attributes[sAttr];
     };
 
-    Model.find = function(where, order, limit, offset, callback) {
+    Model.find = function(/* where, order, limit, offset, callback */) {
+        var callback = (arguments.length > 0) ? arguments[arguments.length-1] : function() {};
+
+        var where  = (arguments.length > 1) ? arguments[0] : undefined;
+        var order  = (arguments.length > 2) ? arguments[1] : undefined;
+        var limit  = (arguments.length > 3) ? arguments[2] : undefined;
+        var offset = (arguments.length > 4) ? arguments[3] : undefined;
+
+        if ('function' !== typeof callback)
+            throw "Callback not defined.";
+
         this._storageEngine.query()
             .select()
             .where(where)
@@ -78,11 +88,16 @@ module.exports = function(name) {
             });
     };
 
-    Model.findOne = function(filter, callback) {
-        this._storageEngine.query().select().where(filter).limit(1).call(function(err, data) {
+    Model.findOne = function(/* where, callback */) {
+        var callback = (arguments.length > 0) ? arguments[arguments.length-1] : function() {};
+
+        var where  = (arguments.length > 1) ? arguments[0] : undefined;
+
+        this._storageEngine.query().select().where(where).limit(1).call(function(err, data) {
             if (data instanceof Array && data.length > 0) {
                 //var currentData = data.shift();
-                console.log("Create Model of " + JSON.stringify(data[0]));
+                //console.log("Create Model of " + JSON.stringify(data[0]));
+
                 var model = new Model(data[0]);
                 callback(err, model);
             } else {
@@ -98,16 +113,16 @@ module.exports = function(name) {
     };
 
     Model.prototype.set = function(object) {
-        console.log("model.set called: " + object);
+        //console.log("model.set called: " + object);
         if (object instanceof Object) {
-            console.log("object is instanceif Object");
+            //console.log("object is instanceif Object");
             for (var attr in object) {
                 if (typeof this[attr] == 'function')
                     this[attr](object[attr]);
             }
-            console.dir(this.attrs);
+            //console.dir(this.attrs);
         } else {
-            console.error("Cannot set. Not a object: " + object);
+            throw "Model.set: Object expected but " + typeof(object) + " received";
         }
     };
 
@@ -140,18 +155,14 @@ module.exports = function(name) {
         if (check === true) {
 
             if (this.isValid()) {
-                console.log("doing update");
                 var where = {};
                 where[this.primaryKey] = this.attrs[this.primaryKey];
 
                 this.model._storageEngine.query().update().where(where).set(this.attrs).limit(1).call(function(err) {
-                    console.log("got update callback");
                     callback(err);
                 });
             } else {
-                console.log("doing insert");
                 this.model._storageEngine.query().insert().set(this.attrs).call(function(err, data) {
-                    console.log("got insert callback");
                     if (data.affectedRows > 0) {
                         this[this.primaryKey](data.insertId);
                     }
@@ -182,7 +193,7 @@ module.exports = function(name) {
     };
 
     Model.prototype.delete = function() {
-
+        // TODO build delete function
     };
 
     return Model;
