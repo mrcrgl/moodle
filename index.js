@@ -133,7 +133,9 @@ module.exports = function(name) {
         return (Object.keys(errors).length < 1) ? true : errors;
     };
 
-    Model.prototype.save = function(callback) {
+    Model.prototype.save = function(/* callback */) {
+        var callback = (arguments.length > 0) ? arguments[arguments.length-1] : function() {};
+
         var check = this.validate();
         if (check === true) {
 
