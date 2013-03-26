@@ -1,0 +1,30 @@
+{
+    "name": "moodle",
+    "description": "Model module for node for use with both mongodb and mysql.",
+    "version": "1.0.0",
+    "author": "Marc Riegel <mail@marclab.de>",
+    "homepage": "https://github.com/mrcrgl/node-model",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/mrcrgl/node-model.git"
+    },
+    "main": "./index",
+    "engines": {
+        "node": "*"
+    },
+    "readmeFilename": "README.md",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "querybuilder": "1.*"
+    },
+    "keywords": [
+        "node.js",
+        "model",
+        "mongodb",
+        "mysql",
+        "session_id"
+    ],
+    "license": "MIT"
+}
