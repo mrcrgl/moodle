@@ -28,4 +28,11 @@ var AttrType = function(attr) {
 
 AttrType.prototype = new DefaultAttrType();
 
+AttrType.prototype.set = function(v) {
+    if (typeof v == 'object' || v instanceof Array) {
+        return new Object(v);
+    }
+    return {0:v};
+};
+
 module.exports = AttrType;

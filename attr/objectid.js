@@ -22,7 +22,7 @@ var AttrType = function(attr) {
     this.required(false);
 
     this.validator(function(self, v) {
-        if (undefined !== v && !v.toString().match(/^([0-9a-f]{24})$/)) {
+        if (!v || !v.toString().match(/^([0-9a-f]{24})$/)) {
             self.errors.push("Not a valid ObjectId: "+v);
         }
     });
