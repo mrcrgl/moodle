@@ -1,7 +1,7 @@
 {
     "name": "moodle",
     "description": "Model module for node for use with both mongodb and mysql.",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "author": "Marc Riegel <mail@marclab.de>",
     "homepage": "https://github.com/mrcrgl/node-model",
     "repository": {
