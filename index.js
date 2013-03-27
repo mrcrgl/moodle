@@ -172,7 +172,7 @@ module.exports = function(name) {
             }
 
         } else {
-            console.dir("Save failed by validation: " + check);
+            //console.dir("Save failed by validation: " + check);
             callback(check);
         }
     };

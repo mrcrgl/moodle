@@ -35,7 +35,7 @@ Storage.prototype.query = function() {
 
 Storage.prototype.execute = function(query, callback) {
 
-    console.dir(query);
+    //console.dir(query);
 
     var cursor = null,
         multiple = (query.limit > 1) ? true : false,
