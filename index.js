@@ -122,7 +122,7 @@ module.exports = function(name) {
             }
             //console.dir(this.attrs);
         } else {
-            throw "Model.set: Object expected but " + typeof(object) + " received";
+            console.log("Model.set: Object expected but " + typeof(object) + " received");
         }
     };
 
