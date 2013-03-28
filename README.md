@@ -100,6 +100,64 @@ User.find({status:true}, function(err, users) {
 
 ```
 
+## Supported storages
 
+* MongoDB (Tested with [node-mongodb-native](https://github.com/mongodb/node-mongodb-native))
+* MySQL (Tested with [node-mysql](https://github.com/felixge/node-mysql))
 
+## Supported attribute types
 
+* String
+* Integer
+* Bool
+* Enum
+* Id
+* ObjectId
+* Object
+* Array
+* Date
+
+## API
+
+### Attribute API
+
+#### .alias()
+
+Set an alias name for this attribute. It will be used for the error messages.
+
+Returns the Attribute object for chaining.
+
+#### .required(/* bool */)
+
+Set this attribute as requirement. If a field is not required and not undefined, it will be validated.
+Otherwise, if it's required, it will be validated in every case.
+
+Returns the Attribute object for chaining.
+
+#### .validator(/* function(self, value) {} */)
+
+Add your own function to validate a field. This function is called with two parameters,
+the current attribute instance and the value. Errors have to be pushed to self.errors.
+
+Example:
+´´´javascript
+function(self, v) {
+    if (!v instanceof Array) {
+        self.errors.push("Not a valid array: "+v);
+    }
+}
+´´´
+
+Returns the Attribute object for chaining.
+
+#### .default(/* mixed */)
+
+Set the default value of this attribute. If a value is undefined, the default value is used.
+
+Returns the Attribute object for chaining.
+
+#### .option(/* string */) -> only for "Enum"
+
+Adds a possible option to this attribute. Only added options were validated.
+
+Returns the Attribute object for chaining.
