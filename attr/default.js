@@ -49,7 +49,7 @@ AttrType.prototype.validate = function(v) {
     var fns = this.validators;
     self.errors = [];
 
-    if (this.requirement(v)) {
+    if (this.checkRequirement(v)) {
         self.errors = [];
 
         for (var i in fns) {
@@ -60,14 +60,30 @@ AttrType.prototype.validate = function(v) {
     return (self.errors.length <= 0);
 };
 
-AttrType.prototype.requirement = function(v) {
-    if (this.getOption('required') && undefined === v) {
-        this.errors.push(this.alias() + " is required.");
+AttrType.prototype.isDefined = function(v) {
+    return (undefined !== v && null !== v);
+};
 
-        return false;
+AttrType.prototype.checkRequirement = function(v) {
+    var isDefined = this.isDefined(v);
+
+    if (this.getOption('required')) {
+        if (!isDefined) {
+            // should be defined
+            this.errors.push(this.alias() + " is required.");
+            return false;
+        } else {
+            return true;
+        }
+    } else {
+        if (!isDefined) {
+            // is undefined and not required, so skip next validators
+            return false;
+        } else {
+            // not required but defined, so it must be checked
+            return true;
+        }
     }
-
-    return true;
 };
 
 AttrType.prototype.alias = function(alias) {

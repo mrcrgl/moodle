@@ -16,13 +16,15 @@ module.exports = function(name) {
 
         this.attrs = {};
 
-        this.set(attrs);
+        if (attrs instanceof Object) this.set(attrs);
     };
 
     Model._attributes = {};
     Model._storageEngine = new DefaultStorage();
 
     Model.storage = function(sStorageType) {
+        // TODO check arguments
+
         if (sStorageType) {
             var Storage = require('./storage/' + sStorageType.toLowerCase());
             this._storageEngine = new Storage();
@@ -32,6 +34,8 @@ module.exports = function(name) {
     };
 
     Model.attr = function(sAttr, sType) {
+        // TODO check arguments
+
         if (sType) {
             if (sAttr == 'id' || sAttr == '_id') {
                 this.prototype.primaryKey = sAttr;
@@ -43,7 +47,7 @@ module.exports = function(name) {
 
         var model = this;
         this.prototype[sAttr] = function(val) {
-            if (0 == arguments.length) return this.attrs[sAttr] || undefined;
+            if (0 == arguments.length) return this.attrs[sAttr] || model._attributes[sAttr].default();
 
             val = model._attributes[sAttr].set(val);
 
@@ -150,6 +154,8 @@ module.exports = function(name) {
 
     Model.prototype.save = function(/* callback */) {
         var callback = (arguments.length > 0) ? arguments[arguments.length-1] : function() {};
+
+        // TODO check for primaryKey
 
         var check = this.validate();
         if (check === true) {

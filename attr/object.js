@@ -17,6 +17,7 @@ var DefaultAttrType = require('./default');
 var AttrType = function(attr) {
 
     this.initialize(attr);
+    this.default({});
 
     this.validator(function(self, v) {
         if (typeof v !== 'object') {
