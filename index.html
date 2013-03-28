@@ -28,32 +28,106 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>Welcome to GitHub Pages.</h3>
+          <h1>node-model</h1>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<h2>Install</h2>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<div class="highlight"><pre><span class="nv">$ </span>npm install moodle
+</pre></div>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<h2>Usage</h2>
 
-<h3>Designer Templates</h3>
+<h3>Create model (example file)</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<div class="highlight"><pre><span class="kd">var</span> <span class="nx">db</span>    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'your-mongo-instance'</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">Model</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'moodle'</span><span class="p">);</span>
 
-<h3>Rather Drive Stick?</h3>
+<span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Model</span><span class="p">(</span><span class="s1">'User'</span><span class="p">);</span>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<span class="nx">User</span><span class="p">.</span><span class="nx">storage</span><span class="p">(</span><span class="s1">'mongodb'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">connect</span><span class="p">(</span>
+        <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> 
+            <span class="c1">// Return your mongo instance with selected collection</span>
+            <span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nx">users</span> 
+        <span class="p">}</span>
+    <span class="p">);</span>
 
-<h3>Authors and Contributors</h3>
+<span class="cm">/**</span>
+<span class="cm"> * Define attributes</span>
+<span class="cm"> */</span>
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'_id'</span><span class="p">,</span> <span class="s1">'ObjectId'</span><span class="p">);</span>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'String'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
 
-<h3>Support or Contact</h3>
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'permissions'</span><span class="p">,</span> <span class="s1">'Object'</span><span class="p">);</span>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'password'</span><span class="p">,</span> <span class="s1">'String'</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
+
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'last_login'</span><span class="p">,</span> <span class="s1">'Date'</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">default</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+
+<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'Bool'</span><span class="p">)</span>
+    <span class="p">.</span><span class="k">default</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
+
+<span class="nx">modules</span><span class="p">.</span><span class="kr">export</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span>
+
+</pre></div>
+
+<h3>Using the model</h3>
+
+<div class="highlight"><pre>
+<span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./models/user'</span><span class="p">);</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Save new</span>
+<span class="cm"> */</span>
+<span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">();</span>
+
+<span class="nx">user</span><span class="p">.</span><span class="nx">owner</span><span class="p">(</span><span class="s2">"51223c75bb64ba8d60000000"</span><span class="p">);</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">(</span><span class="s2">"root"</span><span class="p">);</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">password</span><span class="p">(</span><span class="s2">"secret"</span><span class="p">);</span>
+<span class="nx">user</span><span class="p">.</span><span class="nx">permissions</span><span class="p">({</span>
+    <span class="nx">wheel</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+
+    <span class="nx">user</span><span class="p">.</span><span class="nx">_id</span><span class="p">();</span> <span class="c1">// return the generated _id</span>
+    <span class="c1">// _id</span>
+
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"saved!"</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Update model</span>
+<span class="cm"> */</span>
+<span class="nx">User</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="s2">"51519576d2381d38df000003"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+
+    <span class="nx">user</span><span class="p">.</span><span class="nx">last_login</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
+    <span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+    <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * Find multiple</span>
+<span class="cm"> */</span>
+<span class="nx">User</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">status</span><span class="o">:</span><span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">user</span> <span class="k">in</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="k">instanceof</span> <span class="nx">User</span><span class="p">)</span>
+            <span class="c1">// true</span>
+
+    <span class="p">}</span>
+
+<span class="p">});</span>
+
+</pre></div>
         </section>
 
         <aside id="sidebar">
