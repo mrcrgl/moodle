@@ -1,7 +1,7 @@
 {
     "name": "moodle",
     "description": "Model module for node for use with both mongodb and mysql.",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "author": "Marc Riegel <mail@marclab.de>",
     "homepage": "https://github.com/mrcrgl/node-model",
     "repository": {
@@ -17,7 +17,7 @@
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-        "querybuilder": "1.*"
+        "querybuilder": "1.x"
     },
     "keywords": [
         "node.js",
