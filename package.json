@@ -3,10 +3,10 @@
     "description": "Model module for node for use with both mongodb and mysql.",
     "version": "1.1.5",
     "author": "Marc Riegel <mail@marclab.de>",
-    "homepage": "https://github.com/mrcrgl/node-model",
+    "homepage": "http://mrcrgl.github.com/moodle",
     "repository": {
         "type": "git",
-        "url": "git://github.com/mrcrgl/node-model.git"
+        "url": "git://github.com/mrcrgl/moodle.git"
     },
     "main": "./index",
     "engines": {
