@@ -140,13 +140,13 @@ Add your own function to validate a field. This function is called with two para
 the current attribute instance and the value. Errors have to be pushed to self.errors.
 
 Example:
-´´´javascript
+```javascript
 function(self, v) {
     if (!v instanceof Array) {
         self.errors.push("Not a valid array: "+v);
     }
 }
-´´´
+```
 
 Returns the Attribute object for chaining.
 
