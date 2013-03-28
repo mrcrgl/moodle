@@ -7,7 +7,7 @@
 
 
 var DefaultStorage = require('./default'),
-    QueryBuilder    = require('../../node-querybuilder');
+    QueryBuilder    = require('querybuilder');
 
 var Storage = function(Model) {
     this._connect = function() {};
@@ -38,18 +38,12 @@ Storage.prototype.execute = function(query, callback) {
     //console.dir(query);
 
     var cursor = null,
-        multiple = (query.limit > 1) ? true : false,
         sent = false;
 
 
 
     if (query.type == 'select') {
-        //if (multiple) {
-            cursor = this._connect().find(query.where);
-        //} else {
-        //    cursor = this._connect().findOne(query.where, callback);
-        //    sent = true;
-        //}
+        cursor = this._connect().find(query.where);
     } else if (query.type == 'update') {
         cursor = this._connect().update(query.where, query.set, { safe: true }, function(err) {
             if (err) console.error(err);
