@@ -1,146 +1,157 @@
+
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>moodle - node.js model for mysql & mongodb</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <!-- Le styles -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+            padding-top: 20px;
+            padding-bottom: 60px;
+        }
 
-    <title>moodle - a simple node.js model by Marc Riegel</title>
-  </head>
+            /* Custom container */
+        .container {
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+        .container > hr {
+            margin: 60px 0;
+        }
 
-  <body>
+            /* Main marketing message and sign up button */
+        .jumbotron {
+            margin: 80px 0;
+            text-align: center;
+        }
+        .jumbotron h1 {
+            font-size: 100px;
+            line-height: 1;
+        }
+        .jumbotron .lead {
+            font-size: 24px;
+            line-height: 1.25;
+        }
+        .jumbotron .btn {
+            font-size: 21px;
+            padding: 14px 24px;
+        }
 
-    <header>
-      <div class="container">
-        <h1>moodle - a simple node.js model</h1>
-        <h2>Model module for node for use with both mongodb and mysql.</h2>
+            /* Supporting marketing content */
+        .marketing {
+            margin: 60px 0;
+        }
+        .marketing p + h4 {
+            margin-top: 28px;
+        }
 
-        <section id="downloads">
-          <a href="https://github.com/mrcrgl/moodle/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/mrcrgl/moodle/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/mrcrgl/moodle" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
 
-    <div class="container">
-      <section id="main_content">
-        <h1>node-model</h1>
+            /* Customize the navbar links to be fill the entire space of the .navbar */
+        .navbar .navbar-inner {
+            padding: 0;
+        }
+        .navbar .nav {
+            margin: 0;
+            display: table;
+            width: 100%;
+        }
+        .navbar .nav li {
+            display: table-cell;
+            width: 1%;
+            float: none;
+        }
+        .navbar .nav li a {
+            font-weight: bold;
+            text-align: center;
+            border-left: 1px solid rgba(255,255,255,.75);
+            border-right: 1px solid rgba(0,0,0,.1);
+        }
+        .navbar .nav li:first-child a {
+            border-left: 0;
+            border-radius: 3px 0 0 3px;
+        }
+        .navbar .nav li:last-child a {
+            border-right: 0;
+            border-radius: 0 3px 3px 0;
+        }
+    </style>
+    <link href="css/bootstrap-responsive.min.css" rel="stylesheet">
 
-<h2>Install</h2>
+    <link rel="shortcut icon" href="/ico/favicon.png">
+</head>
 
-<div class="highlight"><pre><span class="nv">$ </span>npm install moodle
-</pre></div>
+<body>
 
-<h2>Usage</h2>
+<div class="container">
 
-<h3>Create model (example file)</h3>
-
-<div class="highlight"><pre><span class="kd">var</span> <span class="nx">db</span>    <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'your-mongo-instance'</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">Model</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'moodle'</span><span class="p">);</span>
-
-<span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Model</span><span class="p">(</span><span class="s1">'User'</span><span class="p">);</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">storage</span><span class="p">(</span><span class="s1">'mongodb'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">connect</span><span class="p">(</span>
-        <span class="kd">function</span><span class="p">()</span> <span class="p">{</span> 
-            <span class="c1">// Return your mongo instance with selected collection</span>
-            <span class="k">return</span> <span class="nx">db</span><span class="p">.</span><span class="nx">users</span> 
-        <span class="p">}</span>
-    <span class="p">);</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Define attributes</span>
-<span class="cm"> */</span>
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'_id'</span><span class="p">,</span> <span class="s1">'ObjectId'</span><span class="p">);</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'username'</span><span class="p">,</span> <span class="s1">'String'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'permissions'</span><span class="p">,</span> <span class="s1">'Object'</span><span class="p">);</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'password'</span><span class="p">,</span> <span class="s1">'String'</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'last_login'</span><span class="p">,</span> <span class="s1">'Date'</span><span class="p">)</span>
-    <span class="p">.</span><span class="k">default</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
-
-<span class="nx">User</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s1">'status'</span><span class="p">,</span> <span class="s1">'Bool'</span><span class="p">)</span>
-    <span class="p">.</span><span class="k">default</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">required</span><span class="p">();</span>
-
-<span class="nx">modules</span><span class="p">.</span><span class="kr">export</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span>
-
-</pre></div>
-
-<h3>Using the model</h3>
-
-<div class="highlight"><pre>
-<span class="kd">var</span> <span class="nx">User</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'./models/user'</span><span class="p">);</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Save new</span>
-<span class="cm"> */</span>
-<span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">();</span>
-
-<span class="nx">user</span><span class="p">.</span><span class="nx">owner</span><span class="p">(</span><span class="s2">"51223c75bb64ba8d60000000"</span><span class="p">);</span>
-<span class="nx">user</span><span class="p">.</span><span class="nx">username</span><span class="p">(</span><span class="s2">"root"</span><span class="p">);</span>
-<span class="nx">user</span><span class="p">.</span><span class="nx">password</span><span class="p">(</span><span class="s2">"secret"</span><span class="p">);</span>
-<span class="nx">user</span><span class="p">.</span><span class="nx">permissions</span><span class="p">({</span>
-    <span class="nx">wheel</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span>
-
-<span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-
-    <span class="nx">user</span><span class="p">.</span><span class="nx">_id</span><span class="p">();</span> <span class="c1">// return the generated _id</span>
-    <span class="c1">// _id</span>
-
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">"saved!"</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Update model</span>
-<span class="cm"> */</span>
-<span class="nx">User</span><span class="p">.</span><span class="nx">findOne</span><span class="p">({</span><span class="nx">_id</span><span class="o">:</span> <span class="s2">"51519576d2381d38df000003"</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">user</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-
-    <span class="nx">user</span><span class="p">.</span><span class="nx">last_login</span><span class="p">(</span><span class="k">new</span> <span class="nb">Date</span><span class="p">());</span>
-    <span class="nx">user</span><span class="p">.</span><span class="nx">save</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
-    <span class="p">});</span>
-<span class="p">});</span>
-
-<span class="cm">/**</span>
-<span class="cm"> * Find multiple</span>
-<span class="cm"> */</span>
-<span class="nx">User</span><span class="p">.</span><span class="nx">find</span><span class="p">({</span><span class="nx">status</span><span class="o">:</span><span class="kc">true</span><span class="p">},</span> <span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="kd">var</span> <span class="nx">user</span> <span class="k">in</span> <span class="nx">users</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(</span><span class="nx">user</span> <span class="k">instanceof</span> <span class="nx">User</span><span class="p">)</span>
-            <span class="c1">// true</span>
-
-    <span class="p">}</span>
-
-<span class="p">});</span>
-
-</pre></div>
-      </section>
+    <div class="masthead">
+        <h3 class="muted">Moodle <small>a flexible & lightweight node.js model</small></h3>
+        <div class="navbar">
+            <div class="navbar-inner">
+                <div class="container">
+                    <ul class="nav">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li><a href="#">Projects</a></li>
+                        <li><a href="#">Services</a></li>
+                        <li><a href="#">Downloads</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div><!-- /.navbar -->
     </div>
 
-              <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-39670076-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
+    <!-- Jumbotron -->
+    <div class="jumbotron">
+        <h1>Moodle</h1>
+        <p class="lead">a lightweight and fast node.js model with MySQL & MongoDB backend.</p>
+        <a class="btn btn-large btn-success" href="https://npmjs.org/package/moodle" target="_blank">View on npmjs.org</a>
+        <a class="btn btn-large btn-success" href="https://github.com/mrcrgl/moodle" target="_blank">View on Github</a>
+    </div>
 
-  </body>
+    <hr>
+
+    <!-- Example row of columns -->
+    <div class="row-fluid">
+        <div class="span4">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Heading</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+        <div class="span4">
+            <h2>Heading</h2>
+            <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa.</p>
+            <p><a class="btn" href="#">View details &raquo;</a></p>
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="footer">
+        <p>&copy; Company 2013</p>
+    </div>
+
+</div> <!-- /container -->
+
+<a href="https://github.com/mrcrgl"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png" alt="Fork me on GitHub"></a>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="js/jquery.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
 </html>
