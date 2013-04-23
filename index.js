@@ -198,8 +198,17 @@ module.exports = function(name) {
         return false;
     };
 
-    Model.prototype.delete = function() {
-        // TODO build delete function
+    Model.prototype.delete = function(/* callback */) {
+        var callback = (arguments.length > 0) ? arguments[arguments.length-1] : function() {};
+
+        if (this.isValid()) {
+            var where = {};
+            where[this.primaryKey] = this.attrs[this.primaryKey];
+
+            this.model._storageEngine.query().delete(where).limit(1).call(function(err) {
+                callback(err);
+            });
+        }
     };
 
     return Model;

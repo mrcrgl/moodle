@@ -31,6 +31,7 @@ Storage.prototype.query = function() {
         .handler(function(query, callback) {
             storage.execute(query, callback);
         });
+
 };
 
 Storage.prototype.execute = function(query, callback) {
