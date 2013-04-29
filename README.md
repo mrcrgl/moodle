@@ -10,6 +10,7 @@ $ npm install moodle
 
 ### Create model (example file)
 ```javascript
+    
     var db    = require('your-mongo-instance');
     var Model = require('moodle');
     
@@ -48,6 +49,7 @@ $ npm install moodle
 
 ### Using the model
 ```javascript
+    
     var User = require('./models/user');
 
     /**
