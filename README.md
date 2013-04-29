@@ -10,45 +10,48 @@ $ npm install moodle
 
 ### Create model (example file)
 ```javascript
-var db    = require('your-mongo-instance');
-var Model = require('moodle');
 
-var User = new Model('User');
 
-User.storage('mongodb')
-    .connect(
-        function() { 
-            // Return your mongo instance with selected collection
-            return db.users 
-        }
-    );
+    var db    = require('your-mongo-instance');
+    var Model = require('moodle');
+    
+    var User = new Model('User');
+    
+    User.storage('mongodb')
+        .connect(
+            function() { 
+                // Return your mongo instance with selected collection
+                return db.users 
+            }
+        );
 
-/**
- * Define attributes
- */
-User.attr('_id', 'ObjectId');
-
-User.attr('username', 'String')
-    .required();
-
-User.attr('permissions', 'Object');
-
-User.attr('password', 'String')
-    .required();
-
-User.attr('last_login', 'Date')
-    .default(null);
-
-User.attr('status', 'Bool')
-    .default(true)
-    .required();
-
-modules.export = User;
-
+    /**
+     * Define attributes
+     */
+    User.attr('_id', 'ObjectId');
+    
+    User.attr('username', 'String')
+        .required();
+    
+    User.attr('permissions', 'Object');
+    
+    User.attr('password', 'String')
+        .required();
+    
+    User.attr('last_login', 'Date')
+        .default(null);
+    
+    User.attr('status', 'Bool')
+        .default(true)
+        .required();
+    
+    modules.export = User;
+    
 ```
 
 ### Using the model
 ```javascript
+    
     
     var User = require('./models/user');
 
@@ -141,11 +144,11 @@ the current attribute instance and the value. Errors have to be pushed to self.e
 
 Example:
 ```javascript
-function(self, v) {
-    if (!v instanceof Array) {
-        self.errors.push("Not a valid array: "+v);
+    function(self, v) {
+        if (!v instanceof Array) {
+            self.errors.push("Not a valid array: "+v);
+        }
     }
-}
 ```
 
 Returns the Attribute object for chaining.
@@ -156,7 +159,7 @@ Set the default value of this attribute. If a value is undefined, the default va
 
 Returns the Attribute object for chaining.
 
-#### .option(/* string */) -> only for "Enum"
+#### `.option(/* string */)` -> only for "Enum"
 
 Adds a possible option to this attribute. Only added options were validated.
 
