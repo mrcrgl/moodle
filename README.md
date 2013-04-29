@@ -11,7 +11,6 @@ $ npm install moodle
 ### Create model (example file)
 ```javascript
 
-
     var db    = require('your-mongo-instance');
     var Model = require('moodle');
     
@@ -51,7 +50,6 @@ $ npm install moodle
 
 ### Using the model
 ```javascript
-    
     
     var User = require('./models/user');
 
@@ -144,11 +142,11 @@ the current attribute instance and the value. Errors have to be pushed to self.e
 
 Example:
 ```javascript
-    function(self, v) {
-        if (!v instanceof Array) {
-            self.errors.push("Not a valid array: "+v);
-        }
+function(self, v) {
+    if (!v instanceof Array) {
+        self.errors.push("Not a valid array: "+v);
     }
+}
 ```
 
 Returns the Attribute object for chaining.
@@ -159,7 +157,7 @@ Set the default value of this attribute. If a value is undefined, the default va
 
 Returns the Attribute object for chaining.
 
-#### `.option(/* string */)` -> only for "Enum"
+#### .option(/* string */) -> only for "Enum"
 
 Adds a possible option to this attribute. Only added options were validated.
 
