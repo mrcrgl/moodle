@@ -1,29 +1,32 @@
 {
-    "name": "moodle",
-    "description": "Model module for node for use with both mongodb and mysql.",
-    "version": "1.1.7",
-    "author": "Marc Riegel <mail@marclab.de>",
-    "homepage": "http://mrcrgl.github.com/moodle",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/mrcrgl/moodle.git"
-    },
-    "main": "./index",
-    "engines": {
-        "node": "*"
-    },
-    "readmeFilename": "README.md",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "dependencies": {
-        "querybuilder": "1.x"
-    },
-    "keywords": [
-        "node.js",
-        "model",
-        "mongodb",
-        "mysql"
-    ],
-    "license": "MIT"
+  "name": "moodle",
+  "description": "Model module for node for use with both mongodb and mysql.",
+  "version": "1.1.7",
+  "author": "Marc Riegel <mail@marclab.de>",
+  "homepage": "http://mrcrgl.github.com/moodle",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mrcrgl/moodle.git"
+  },
+  "main": "./index",
+  "engines": {
+    "node": "*"
+  },
+  "readmeFilename": "README.md",
+  "scripts": {
+    "test": "vows --spec --isolate ./test"
+  },
+  "dependencies": {
+    "querybuilder": "1.x"
+  },
+  "devDependencies": {
+    "vows": "*"
+  },
+  "keywords": [
+    "node.js",
+    "model",
+    "mongodb",
+    "mysql"
+  ],
+  "license": "MIT"
 }
