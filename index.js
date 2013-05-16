@@ -55,7 +55,9 @@ module.exports = function (name) {
 
     this.prototype[sAttr] = function (val) {
       if (0 === arguments.length) {
-        return this.attrs[sAttr] || model._attributes[sAttr].default();
+        return ('undefined' === typeof this.attrs[sAttr])
+          ? model._attributes[sAttr].default()
+          : this.attrs[sAttr];
       }
 
       val = model._attributes[sAttr].set(val);
