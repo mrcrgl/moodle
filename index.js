@@ -73,6 +73,27 @@ module.exports = function (name) {
     return this._attributes[sAttr];
   };
 
+  /* where, callback */
+  Model.count = function () {
+    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {},
+      where = (arguments.length > 1) ? arguments[0] : undefined;
+
+    if ('function' !== typeof callback) {
+      throw "Callback not defined.";
+    }
+
+    this._storageEngine.query()
+      .count()
+      .where(where)
+      .call(function (err, data) {
+        if (data instanceof Array && data.length === 1) {
+          callback(err, data[0].count || 0);
+        } else {
+          callback(err, 0);
+        }
+      });
+  };
+
   /* where, order, limit, offset, callback */
   Model.find = function () {
     var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {},
