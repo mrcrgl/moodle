@@ -29,7 +29,10 @@ var AttrType = function(attr) {
 AttrType.prototype = new DefaultAttrType();
 
 AttrType.prototype.set = function(v) {
-    return (v && v.toString() == 'true');
+  if (['true', 'on', '1'].indexOf(String(v).toLowerCase()) !== -1) {
+    return true;
+  }
+  return false;
 };
 
 module.exports = AttrType;

@@ -5,18 +5,22 @@
  *
  */
 
-var DefaultStorage = require('./storage/default');
-DefaultAttrType = require('./attr/default');
+var DefaultStorage = require('./storage/default'),
+  DefaultAttrType = require('./attr/default');
 
 
 module.exports = function (name) {
 
   var Model = function (attrs) {
-    if (!(this instanceof Model)) return new Model(attrs);
+    if (!(this instanceof Model)) {
+      return new Model(attrs);
+    }
 
     this.attrs = {};
 
-    if (attrs instanceof Object) this.set(attrs);
+    if (attrs instanceof Object) {
+      this.set(attrs);
+    }
   };
 
   Model._attributes = {};
@@ -36,24 +40,31 @@ module.exports = function (name) {
   Model.attr = function (sAttr, sType) {
     // TODO check arguments
 
+    var model = this,
+      AttrType = null;
+
     if (sType) {
-      if (sAttr == 'id' || sAttr == '_id') {
+      if (sAttr === 'id' || sAttr === '_id') {
         this.prototype.primaryKey = sAttr;
       }
 
-      var AttrType = require('./attr/' + sType.toLowerCase());
+      AttrType = require('./attr/' + sType.toLowerCase());
       this._attributes[sAttr] = new AttrType(sAttr);
     }
 
-    var model = this;
+
     this.prototype[sAttr] = function (val) {
-      if (0 == arguments.length) return this.attrs[sAttr] || model._attributes[sAttr].default();
+      if (0 === arguments.length) {
+        return ('undefined' === typeof this.attrs[sAttr])
+          ? model._attributes[sAttr].default()
+          : this.attrs[sAttr];
+      }
 
       val = model._attributes[sAttr].set(val);
 
-      if (model._attributes[sAttr].validate(val)) {
+      //if (model._attributes[sAttr].validate(val)) {
         //log.info("Attr %s is valid (%s)", sAttr, val);
-      }
+      //}
       this.attrs[sAttr] = val;
 
       return this;
@@ -62,38 +73,17 @@ module.exports = function (name) {
     return this._attributes[sAttr];
   };
 
-  Model.count = function (/* where, callback */) {
-    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {
-    };
+  /* where, order, limit, offset, callback */
+  Model.find = function () {
+    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {},
+      where = (arguments.length > 1) ? arguments[0] : undefined,
+      order = (arguments.length > 2) ? arguments[1] : undefined,
+      limit = (arguments.length > 3) ? arguments[2] : undefined,
+      offset = (arguments.length > 4) ? arguments[3] : undefined;
 
-    var where = (arguments.length > 1) ? arguments[0] : undefined;
-
-    if ('function' !== typeof callback)
+    if ('function' !== typeof callback) {
       throw "Callback not defined.";
-
-    this._storageEngine.query()
-      .count()
-      .where(where)
-      .call(function (err, data) {
-        if (data instanceof Array && data.length === 0) {
-          callback(err, data[0].count || 0);
-        } else {
-          callback(err, 0);
-        }
-      });
-  };
-
-  Model.find = function (/* where, order, limit, offset, callback */) {
-    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {
-    };
-
-    var where = (arguments.length > 1) ? arguments[0] : undefined;
-    var order = (arguments.length > 2) ? arguments[1] : undefined;
-    var limit = (arguments.length > 3) ? arguments[2] : undefined;
-    var offset = (arguments.length > 4) ? arguments[3] : undefined;
-
-    if ('function' !== typeof callback)
-      throw "Callback not defined.";
+    }
 
     this._storageEngine.query()
       .select()
@@ -103,7 +93,9 @@ module.exports = function (name) {
       .offset(offset || 0)
       .call(function (err, data) {
         if (data instanceof Array && data.length > 0) {
-          for (var i in data) {
+          var i = null;
+
+          for (i = 0; i < data.length; i++) {
             data[i] = new Model(data[i]);
           }
 
@@ -114,11 +106,9 @@ module.exports = function (name) {
       });
   };
 
-  Model.findOne = function (/* where, callback */) {
-    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {
-    };
-
-    var where = (arguments.length > 1) ? arguments[0] : undefined;
+  Model.findOne = function () { /* where, callback */
+    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {},
+      where = (arguments.length > 1) ? arguments[0] : undefined;
 
     this._storageEngine.query().select().where(where).limit(1).call(function (err, data) {
       if (data instanceof Array && data.length > 0) {
@@ -143,9 +133,14 @@ module.exports = function (name) {
     //console.log("model.set called: " + object);
     if (object instanceof Object) {
       //console.log("object is instanceif Object");
-      for (var attr in object) {
-        if (typeof this[attr] == 'function')
-          this[attr](object[attr]);
+      var keys = Object.keys(object),
+        key = null,
+        n = null;
+      for (n = 0; n < keys.length; n++) {
+        key = keys[n];
+        if (typeof this[key] == 'function') {
+          this[key](object[key]);
+        }
       }
       //console.dir(this.attrs);
     } else {
@@ -222,8 +217,18 @@ module.exports = function (name) {
     return false;
   };
 
-  Model.prototype.delete = function () {
-    // TODO build delete function
+  Model.prototype.delete = function (/* callback */) {
+    var callback = (arguments.length > 0) ? arguments[arguments.length - 1] : function () {
+    };
+
+    if (this.isValid()) {
+      var where = {};
+      where[this.primaryKey] = this.attrs[this.primaryKey];
+
+      this.model._storageEngine.query().delete(where).limit(1).call(function (err) {
+        callback(err);
+      });
+    }
   };
 
   return Model;
