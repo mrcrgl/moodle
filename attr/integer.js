@@ -28,4 +28,8 @@ var AttrType = function(attr) {
 
 AttrType.prototype = new DefaultAttrType();
 
+AttrType.prototype.set = function(v) {
+  return parseInt(v);
+};
+
 module.exports = AttrType;
